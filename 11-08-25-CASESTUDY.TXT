@@ -1,0 +1,274 @@
+SQL> CREATE TABLE CUSTOMER_ID(
+  2  CUSTOMER_ID INT PRIMARY KEY,
+  3  NAME VARCHAR(15),
+  4  EMAIL VARCHAR(15),
+  5  PHONE VARCHAR(15),
+  6  ADDRESS VARCHAR(15);
+ADDRESS VARCHAR(15)
+                  *
+ERROR at line 6:
+ORA-00907: missing right parenthesis 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  CREATE TABLE CUSTOMER_ID(
+  2  CUSTOMER_ID INT PRIMARY KEY,
+  3  NAME VARCHAR(15),
+  4  EMAIL VARCHAR(15),
+  5  PHONE VARCHAR(15),
+  6* ADDRESS VARCHAR(15))
+SQL> /
+
+Table created.
+
+SQL> DROP TABLE CUSTOMER_ID;
+
+Table dropped.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1   CREATE TABLE CUSTOMER_ID(
+  2   CUSTOMER_ID INT PRIMARY KEY,
+  3   NAME VARCHAR2(15) NOT NULL,
+  4   EMAIL VARCHAR(15) UNIQUE,
+  5   PHONE VARCHAR(15) NOT NULL,
+  6   ADDRESS VARCHAR(50))
+  7*  /
+SQL> /
+ /
+ *
+ERROR at line 7:
+ORA-00922: missing or invalid option 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1   CREATE TABLE CUSTOMER_ID(
+  2   CUSTOMER_ID INT PRIMARY KEY,
+  3   NAME VARCHAR2(15) NOT NULL,
+  4   EMAIL VARCHAR2(15) UNIQUE,
+  5   PHONE VARCHAR2(15) NOT NULL,
+  6   ADDRESS VARCHAR2(50))
+  7*  /
+  8  /
+ /
+ *
+ERROR at line 7:
+ORA-00922: missing or invalid option 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1   CREATE TABLE CUSTOMER_ID(
+  2   CUSTOMER_ID INT PRIMARY KEY,
+  3   NAME VARCHAR2(15) NOT NULL,
+  4   EMAIL VARCHAR2(15) UNIQUE,
+  5   PHONE VARCHAR2(15) NOT NULL,
+  6   ADDRESS VARCHAR2(50))
+  7*  /
+SQL> /
+ /
+ *
+ERROR at line 7:
+ORA-00922: missing or invalid option 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1   CREATE TABLE CUSTOMERS(
+  2   CUSTOMER_ID INT PRIMARY KEY,
+  3   NAME VARCHAR2(15) NOT NULL,
+  4   EMAIL VARCHAR2(15) UNIQUE,
+  5   PHONE VARCHAR2(15) NOT NULL,
+  6*  ADDRESS VARCHAR2(50))
+SQL> /
+
+Table created.
+
+SQL> DESC CUSTOMERS;
+ Name                                                                                                              Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ CUSTOMER_ID                                                                                                       NOT NULL NUMBER(38)
+ NAME                                                                                                              NOT NULL VARCHAR2(15)
+ EMAIL                                                                                                                      VARCHAR2(15)
+ PHONE                                                                                                             NOT NULL VARCHAR2(15)
+ ADDRESS                                                                                                                    VARCHAR2(50)
+
+SQL> INSERT INTO CUSTOMERS VALUES(&CUSTOMER,'&NAME','&EMAIL','&PHONE','&ADRESS');
+Enter value for customer: 101
+Enter value for name: SUPRIYA
+Enter value for email: SUPRIYABIRAJDAR@GMAIL.COM
+Enter value for phone: 2345347878
+Enter value for adress: BANER
+old   1: INSERT INTO CUSTOMERS VALUES(&CUSTOMER,'&NAME','&EMAIL','&PHONE','&ADRESS')
+new   1: INSERT INTO CUSTOMERS VALUES(101,'SUPRIYA','SUPRIYABIRAJDAR@GMAIL.COM','2345347878','BANER')
+INSERT INTO CUSTOMERS VALUES(101,'SUPRIYA','SUPRIYABIRAJDAR@GMAIL.COM','2345347878','BANER')
+                                           *
+ERROR at line 1:
+ORA-12899: value too large for column "HR"."CUSTOMERS"."EMAIL" (actual: 25, maximum: 15) 
+
+
+SQL> INSERT INTO CUSTOMERS VALUES(1,'SUPRIYA PATIL','SUPRIYAPATIL1@GMAIL.COM
+  2  INSERT INTO CUSTOMERS VALUES(1,'SUPRIYA PATIL','SUPRIYAPATIL1@GMAIL.COM
+  3  
+SQL> INSERT INTO CUSTOMERS VALUES(1,'SUPRIYA PATIL','SUPRIYAPATIL1@GMAIL.COM','2334545663','BANER');
+INSERT INTO CUSTOMERS VALUES(1,'SUPRIYA PATIL','SUPRIYAPATIL1@GMAIL.COM','2334545663','BANER')
+                                               *
+ERROR at line 1:
+ORA-12899: value too large for column "HR"."CUSTOMERS"."EMAIL" (actual: 23, maximum: 15) 
+
+
+SQL> INSERT INTO CUSTOMERS VALUES(&CUSTOMER,'&NAME','&EMAIL','&PHONE',&ADDRESS);
+Enter value for customer: 1
+Enter value for name: SUPRIYA BIRAJDAR
+Enter value for email: SUPRIYABIRAJDAR1@GMAIL.COM
+Enter value for phone: 2345677654
+Enter value for address: BANER
+old   1: INSERT INTO CUSTOMERS VALUES(&CUSTOMER,'&NAME','&EMAIL','&PHONE',&ADDRESS)
+new   1: INSERT INTO CUSTOMERS VALUES(1,'SUPRIYA BIRAJDAR','SUPRIYABIRAJDAR1@GMAIL.COM','2345677654',BANER)
+INSERT INTO CUSTOMERS VALUES(1,'SUPRIYA BIRAJDAR','SUPRIYABIRAJDAR1@GMAIL.COM','2345677654',BANER)
+                                                                                            *
+ERROR at line 1:
+ORA-00984: column not allowed here 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1* INSERT INTO CUSTOMERS VALUES(&CUSTOMER,'&NAME','&EMAIL','&PHONE','&ADDRESS')
+SQL> /
+Enter value for customer: 1
+Enter value for name: SUPRIYA BIRAJDAR
+Enter value for email: SUPRIYABIRAJDAR1@GMAIL.COM
+Enter value for phone: 2345677654
+Enter value for address: BANER
+old   1: INSERT INTO CUSTOMERS VALUES(&CUSTOMER,'&NAME','&EMAIL','&PHONE','&ADDRESS')
+new   1: INSERT INTO CUSTOMERS VALUES(1,'SUPRIYA BIRAJDAR','SUPRIYABIRAJDAR1@GMAIL.COM','2345677654','BANER')
+INSERT INTO CUSTOMERS VALUES(1,'SUPRIYA BIRAJDAR','SUPRIYABIRAJDAR1@GMAIL.COM','2345677654','BANER')
+                               *
+ERROR at line 1:
+ORA-12899: value too large for column "HR"."CUSTOMERS"."NAME" (actual: 16, maximum: 15) 
+
+
+SQL> DROP TABLE CUSTOMERS;
+
+Table dropped.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  CREATE TABLE CUSTOMERS(
+  2  CUSTOMER_ID INT PRIMARY KEY,
+  3  NAME VARCHAR2(50) NOT NULL,
+  4  EMAIL VARCHAR2(50) UNIQUE,
+  5  PHONE VARCHAR2(15) NOT NULL,
+  6  ADDRESS VARCHAR2(255))
+  7*  /
+SQL> /
+ /
+ *
+ERROR at line 7:
+ORA-00922: missing or invalid option 
+
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1  CREATE TABLE CUSTOMERS(
+  2  CUSTOMER_ID INT PRIMARY KEY,
+  3  NAME VARCHAR2(50) NOT NULL,
+  4  EMAIL VARCHAR2(50) UNIQUE,
+  5  PHONE VARCHAR2(15) NOT NULL,
+  6* ADDRESS VARCHAR2(255))
+SQL> /
+
+Table created.
+
+SQL> ED
+Wrote file afiedt.buf
+
+  1*  INSERT INTO CUSTOMERS VALUES('&CUSTOMER','&NAME','&EMAIL','&PHONE','&ADDRESS')
+SQL> /
+Enter value for customer: 1
+Enter value for name: SUPRIYA PATIL
+Enter value for email: SUPERPATIL@GMAIL.COM
+Enter value for phone: 1221123223
+Enter value for address: BANER
+old   1:  INSERT INTO CUSTOMERS VALUES('&CUSTOMER','&NAME','&EMAIL','&PHONE','&ADDRESS')
+new   1:  INSERT INTO CUSTOMERS VALUES('1','SUPRIYA PATIL','SUPERPATIL@GMAIL.COM','1221123223','BANER')
+
+1 row created.
+
+SQL> /
+Enter value for customer: 2
+Enter value for name: ARTI THORAT
+Enter value for email: ARTITHORAT@GMAIL.COM
+Enter value for phone: 1232458778
+Enter value for address: PASHAN
+old   1:  INSERT INTO CUSTOMERS VALUES('&CUSTOMER','&NAME','&EMAIL','&PHONE','&ADDRESS')
+new   1:  INSERT INTO CUSTOMERS VALUES('2','ARTI THORAT','ARTITHORAT@GMAIL.COM','1232458778','PASHAN')
+
+1 row created.
+
+SQL> /
+Enter value for customer: 3
+Enter value for name: REETA PRAJAPATI
+Enter value for email: RITAPRAJAPTI@GMAIL.COM
+Enter value for phone: 6763290234
+Enter value for address: SHEH PARK
+old   1:  INSERT INTO CUSTOMERS VALUES('&CUSTOMER','&NAME','&EMAIL','&PHONE','&ADDRESS')
+new   1:  INSERT INTO CUSTOMERS VALUES('3','REETA PRAJAPATI','RITAPRAJAPTI@GMAIL.COM','6763290234','SHEH PARK')
+
+1 row created.
+
+SQL> SELECT * FROM CUSTOMERS;
+
+CUSTOMER_ID NAME                                               EMAIL                                              PHONE                                                                                 
+----------- -------------------------------------------------- -------------------------------------------------- ---------------                                                                       
+ADDRESS                                                                                                                                                                                                 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+          1 SUPRIYA PATIL                                      SUPERPATIL@GMAIL.COM                               1221123223                                                                            
+BANER                                                                                                                                                                                                   
+                                                                                                                                                                                                        
+          2 ARTI THORAT                                        ARTITHORAT@GMAIL.COM                               1232458778                                                                            
+PASHAN                                                                                                                                                                                                  
+                                                                                                                                                                                                        
+          3 REETA PRAJAPATI                                    RITAPRAJAPTI@GMAIL.COM                             6763290234                                                                            
+SHEH PARK                                                                                                                                                                                               
+                                                                                                                                                                                                        
+
+SQL> SET LINESIZE 200
+SQL> SET PAGESIZE 200
+SQL> SELECT * FROM CUSTOMERS;
+
+CUSTOMER_ID NAME                                               EMAIL                                              PHONE                                                                                 
+----------- -------------------------------------------------- -------------------------------------------------- ---------------                                                                       
+ADDRESS                                                                                                                                                                                                 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+          1 SUPRIYA PATIL                                      SUPERPATIL@GMAIL.COM                               1221123223                                                                            
+BANER                                                                                                                                                                                                   
+                                                                                                                                                                                                        
+          2 ARTI THORAT                                        ARTITHORAT@GMAIL.COM                               1232458778                                                                            
+PASHAN                                                                                                                                                                                                  
+                                                                                                                                                                                                        
+          3 REETA PRAJAPATI                                    RITAPRAJAPTI@GMAIL.COM                             6763290234                                                                            
+SHEH PARK                                                                                                                                                                                               
+                                                                                                                                                                                                        
+
+SQL> SET LINESIZE 500
+SQL> SET PAGESIZE 500
+SQL> SELECT * FROM CUSTOMERS;
+
+CUSTOMER_ID NAME                                               EMAIL                                              PHONE           ADDRESS                                                                                                                                                                                                                                                                                                                                                                           
+----------- -------------------------------------------------- -------------------------------------------------- --------------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------                                                                                                                   
+          1 SUPRIYA PATIL                                      SUPERPATIL@GMAIL.COM                               1221123223      BANER                                                                                                                                                                                                                                                                                                                                                                             
+          2 ARTI THORAT                                        ARTITHORAT@GMAIL.COM                               1232458778      PASHAN                                                                                                                                                                                                                                                                                                                                                                            
+          3 REETA PRAJAPATI                                    RITAPRAJAPTI@GMAIL.COM                             6763290234      SHEH PARK                                                                                                                                                                                                                                                                                                                                                                         
+
+SQL> SPOOL OFF
