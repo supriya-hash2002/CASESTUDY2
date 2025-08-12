@@ -1,0 +1,701 @@
+SQL> desc customers;
+ Name                                                                                                              Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ CUSTOMER_ID                                                                                                       NOT NULL NUMBER(38)
+ NAME                                                                                                              NOT NULL VARCHAR2(50)
+ EMAIL                                                                                                                      VARCHAR2(50)
+ PHONE                                                                                                             NOT NULL VARCHAR2(15)
+ ADDRESS                                                                                                                    VARCHAR2(255)
+
+SQL> create table accounts(
+  2  accountid primary key,
+  3  costomer_id number,
+  4  account_type varchar(20) not null,
+  5  balance number check (balance>=0),
+  6  foreign key costomer_id references customer(customr_id));
+foreign key costomer_id references customer(customr_id))
+            *
+ERROR at line 6:
+ORA-00906: missing left parenthesis 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  create table accounts(
+  2  accountid primary key,
+  3  costomer_id number unique,
+  4  account_type varchar(20) not null,
+  5  balance number check (balance>=0),
+  6* foreign key costomer_id references customer(customr_id))
+SQL> /
+foreign key costomer_id references customer(customr_id))
+            *
+ERROR at line 6:
+ORA-00906: missing left parenthesis 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  create table accounts(
+  2  accountid int primary key,
+  3  costomer_id number,
+  4  account_type varchar(20) not null,
+  5  balance number check (balance>=0),
+  6* foreign key (costomer_id) references customer(customr_id))
+SQL> /
+foreign key (costomer_id) references customer(customr_id))
+                                              *
+ERROR at line 6:
+ORA-00904: "CUSTOMR_ID": invalid identifier 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  create table accounts(
+  2  accountid int primary key,
+  3  costomer_id number(15),
+  4  account_type varchar(20) not null,
+  5  balance number check (balance>=0),
+  6* foreign key (costomer_id) references customer(customr_id))
+SQL> /
+foreign key (costomer_id) references customer(customr_id))
+                                              *
+ERROR at line 6:
+ORA-00904: "CUSTOMR_ID": invalid identifier 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  create table accounts(
+  2  accountid int primary key,
+  3  costomer_id number,
+  4  account_type varchar(20) not null,
+  5  balance number check (balance>=0),
+  6* foreign key (costomer_id) references customers(customr_id))
+SQL> /
+foreign key (costomer_id) references customers(customr_id))
+                                               *
+ERROR at line 6:
+ORA-00904: "CUSTOMR_ID": invalid identifier 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  create table accounts(
+  2  accountid int primary key,
+  3  costomer_id number,
+  4  account_type varchar(20) not null,
+  5  balance number check (balance>=0),
+  6* foreign key (costomer_id) references customers(customer_id))
+SQL> /
+
+Table created.
+
+SQL> desc accounts;
+ Name                                                                                                              Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ ACCOUNTID                                                                                                         NOT NULL NUMBER(38)
+ COSTOMER_ID                                                                                                                NUMBER
+ ACCOUNT_TYPE                                                                                                      NOT NULL VARCHAR2(20)
+ BALANCE                                                                                                                    NUMBER
+
+SQL> insert into accounts values(&accountid,&customer_id,'&account_type',&balance);
+Enter value for accountid: 101
+Enter value for customer_id: 20
+Enter value for account_type: saving 
+Enter value for balance: 20000
+old   1: insert into accounts values(&accountid,&customer_id,'&account_type',&balance)
+new   1: insert into accounts values(101,20,'saving ',20000)
+insert into accounts values(101,20,'saving ',20000)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (HR.SYS_C007295) violated - parent key not found 
+
+
+SQL> insert into accounts values(101,10,'saving'20000);
+insert into accounts values(101,10,'saving'20000)
+                                           *
+ERROR at line 1:
+ORA-00917: missing comma 
+
+
+SQL> insert into accounts values(101,10,'saving',20000);
+insert into accounts values(101,10,'saving',20000)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (HR.SYS_C007295) violated - parent key not found 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  insert into accounts values(&accountid,&customer_id,'&account_type',&balance)
+  2* insert into accounts values(101,60,'saving',20000)
+SQL> /
+Enter value for accountid: 101
+Enter value for customer_id: 60
+Enter value for account_type: saving
+Enter value for balance: 20000
+old   1: insert into accounts values(&accountid,&customer_id,'&account_type',&balance)
+new   1: insert into accounts values(101,60,'saving',20000)
+insert into accounts values(101,60,'saving',20000)
+*
+ERROR at line 2:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> /
+Enter value for accountid: 
+Enter value for customer_id: 
+Enter value for account_type: 
+Enter value for balance: 
+old   1: insert into accounts values(&accountid,&customer_id,'&account_type',&balance)
+new   1: insert into accounts values(,,'',)
+insert into accounts values(,,'',)
+                            *
+ERROR at line 1:
+ORA-00936: missing expression 
+
+
+SQL> insert into customers values(customer_id,name,email,address);
+insert into customers values(customer_id,name,email,address)
+            *
+ERROR at line 1:
+ORA-00947: not enough values 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  insert into customers (customer_id,name,email,address)
+  2* values(10,'amit',amit@swapn.com','pune')
+SQL> /
+ERROR:
+ORA-01756: quoted string not properly terminated 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  insert into customers (customer_id,name,email,address)
+  2* values(10,'amit','amit@swapn.com','pune')
+SQL> /
+insert into customers (customer_id,name,email,address)
+*
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("HR"."CUSTOMERS"."PHONE") 
+
+
+SQL> desc customers;
+ Name                                                                                                              Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ CUSTOMER_ID                                                                                                       NOT NULL NUMBER(38)
+ NAME                                                                                                              NOT NULL VARCHAR2(50)
+ EMAIL                                                                                                                      VARCHAR2(50)
+ PHONE                                                                                                             NOT NULL VARCHAR2(15)
+ ADDRESS                                                                                                                    VARCHAR2(255)
+
+SQL> insert into customers values(&customer_id,'&name','&email',&phone,'&address,);
+Enter value for customer_id: 30
+Enter value for name: super
+Enter value for email: super@12gmail.com
+Enter value for phone: 1234566543
+Enter value for address: baner
+old   1: insert into customers values(&customer_id,'&name','&email',&phone,'&address,)
+new   1: insert into customers values(30,'super','super@12gmail.com',1234566543,'baner,)
+ERROR:
+ORA-01756: quoted string not properly terminated 
+
+
+SQL> insert into customers values(&customer_id,'&name','&email',&phone,'&address',);
+Enter value for customer_id: 30
+Enter value for name: super
+Enter value for email: super@12gmail.com
+Enter value for phone: 1234566543
+Enter value for address: baner
+old   1: insert into customers values(&customer_id,'&name','&email',&phone,'&address',)
+new   1: insert into customers values(30,'super','super@12gmail.com',1234566543,'baner',)
+insert into customers values(30,'super','super@12gmail.com',1234566543,'baner',)
+                                                                               *
+ERROR at line 1:
+ORA-00936: missing expression 
+
+
+SQL> insert into customers values(&customer_id,'&name','&email',&phone,'&address');
+Enter value for customer_id: 30
+Enter value for name: super
+Enter value for email: super@12gmail.com
+Enter value for phone: 1234566543
+Enter value for address: baner
+old   1: insert into customers values(&customer_id,'&name','&email',&phone,'&address')
+new   1: insert into customers values(30,'super','super@12gmail.com',1234566543,'baner')
+
+1 row created.
+
+SQL> desc accounts;
+ Name                                                                                                              Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ ACCOUNTID                                                                                                         NOT NULL NUMBER(38)
+ COSTOMER_ID                                                                                                                NUMBER
+ ACCOUNT_TYPE                                                                                                      NOT NULL VARCHAR2(20)
+ BALANCE                                                                                                                    NUMBER
+
+SQL> insert into customers values(&accountid,&customer_id,'&account_type',&balance);
+Enter value for accountid: 101
+Enter value for customer_id: 1
+Enter value for account_type: savings
+Enter value for balance: 20000
+old   1: insert into customers values(&accountid,&customer_id,'&account_type',&balance)
+new   1: insert into customers values(101,1,'savings',20000)
+insert into customers values(101,1,'savings',20000)
+            *
+ERROR at line 1:
+ORA-00947: not enough values 
+
+
+SQL> insert into customers values(&account_id,&customer_id,'&account_type',&balance);
+Enter value for account_id: 101
+Enter value for customer_id: 1
+Enter value for account_type: savings
+Enter value for balance: 20000
+old   1: insert into customers values(&account_id,&customer_id,'&account_type',&balance)
+new   1: insert into customers values(101,1,'savings',20000)
+insert into customers values(101,1,'savings',20000)
+            *
+ERROR at line 1:
+ORA-00947: not enough values 
+
+
+SQL> insert into customers values(&accountid,&customer_id,'&account_type',&balance);
+Enter value for accountid: 101
+Enter value for customer_id: 1
+Enter value for account_type: savings
+Enter value for balance: 2000
+old   1: insert into customers values(&accountid,&customer_id,'&account_type',&balance)
+new   1: insert into customers values(101,1,'savings',2000)
+insert into customers values(101,1,'savings',2000)
+            *
+ERROR at line 1:
+ORA-00947: not enough values 
+
+
+SQL> insert into customers values(&account_id,&customer_id,'&account_type',&balance);
+Enter value for account_id: 101
+Enter value for customer_id: 1
+Enter value for account_type: savings
+Enter value for balance: 2000
+old   1: insert into customers values(&account_id,&customer_id,'&account_type',&balance)
+new   1: insert into customers values(101,1,'savings',2000)
+insert into customers values(101,1,'savings',2000)
+            *
+ERROR at line 1:
+ORA-00947: not enough values 
+
+
+SQL> insert into accounts values(&account_id,&customer_id,'&account_type',&balance);
+Enter value for account_id: 201
+Enter value for customer_id: 101
+Enter value for account_type: savings
+Enter value for balance: 12000
+old   1: insert into accounts values(&account_id,&customer_id,'&account_type',&balance)
+new   1: insert into accounts values(201,101,'savings',12000)
+insert into accounts values(201,101,'savings',12000)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (HR.SYS_C007295) violated - parent key not found 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1* insert into accounts values(&accountid,&customer_id,'&account_type',&balance)
+SQL> /
+Enter value for accountid: 201
+Enter value for customer_id: 101
+Enter value for account_type: saving
+Enter value for balance: 2000
+old   1: insert into accounts values(&accountid,&customer_id,'&account_type',&balance)
+new   1: insert into accounts values(201,101,'saving',2000)
+insert into accounts values(201,101,'saving',2000)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (HR.SYS_C007295) violated - parent key not found 
+
+
+SQL> insert into accounts values(&accountid,&customer_id,'&account_type',&balance);
+Enter value for accountid: 201
+Enter value for customer_id: 101
+Enter value for account_type: savings
+Enter value for balance: 20000
+old   1: insert into accounts values(&accountid,&customer_id,'&account_type',&balance)
+new   1: insert into accounts values(201,101,'savings',20000)
+insert into accounts values(201,101,'savings',20000)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (HR.SYS_C007295) violated - parent key not found 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  insert into accounts (account_id,customer_id,'account_type',balance)
+  2* values(201,101,'saving',12000)
+SQL> /
+insert into accounts (account_id,customer_id,'account_type',balance)
+                                             *
+ERROR at line 1:
+ORA-01747: invalid user.table.column, table.column, or column specification 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  insert into customers (customer_id,customer_name, address)
+  2* values(1,'supriya',pune)
+SQL> /
+values(1,'supriya',pune)
+                   *
+ERROR at line 2:
+ORA-00984: column not allowed here 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1* insert into customers values (&customer_id,'&customer_name', &address)
+SQL> /
+Enter value for customer_id: 1
+Enter value for customer_name: supriya
+Enter value for address: pune
+old   1: insert into customers values (&customer_id,'&customer_name', &address)
+new   1: insert into customers values (1,'supriya', pune)
+insert into customers values (1,'supriya', pune)
+            *
+ERROR at line 1:
+ORA-00947: not enough values 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1* insert into customers values (&customer_id,'&customer_name', '&address')
+SQL> /
+Enter value for customer_id: 1
+Enter value for customer_name: supriya
+Enter value for address: pune
+old   1: insert into customers values (&customer_id,'&customer_name', '&address')
+new   1: insert into customers values (1,'supriya', 'pune')
+insert into customers values (1,'supriya', 'pune')
+            *
+ERROR at line 1:
+ORA-00947: not enough values 
+
+
+SQL> drop table customers;
+drop table customers
+           *
+ERROR at line 1:
+ORA-02449: unique/primary keys in table referenced by foreign keys 
+
+
+SQL> drop table accounts;
+
+Table dropped.
+
+SQL> drop table customers;
+
+Table dropped.
+
+SQL> CREATE TABLE customers (
+  2  customer_id NUMBER PRIMARY KEY,
+  3  customer_name VARCHAR2(50),
+  4  email VARCHAR2(50),
+  5  phone NUMBER,
+  6  address VARCHAR2(100)
+  7  );
+
+Table created.
+
+SQL> desc desc customers;
+Usage: DESCRIBE [schema.]object[@db_link]
+SQL> desc customes;
+ERROR:
+ORA-04043: object customes does not exist 
+
+
+SQL> desc customers;
+ Name                                                                                                              Null?    Type
+ ----------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------
+ CUSTOMER_ID                                                                                                       NOT NULL NUMBER
+ CUSTOMER_NAME                                                                                                              VARCHAR2(50)
+ EMAIL                                                                                                                      VARCHAR2(50)
+ PHONE                                                                                                                      NUMBER
+ ADDRESS                                                                                                                    VARCHAR2(100)
+
+SQL> insert into customers values(&customer_id,'&customer_name','&email',&phone,'&address');
+Enter value for customer_id: 20
+Enter value for customer_name: super
+Enter value for email: super234@gmail.com
+Enter value for phone: 1232457887
+Enter value for address: baner
+old   1: insert into customers values(&customer_id,'&customer_name','&email',&phone,'&address')
+new   1: insert into customers values(20,'super','super234@gmail.com',1232457887,'baner')
+
+1 row created.
+
+SQL> /
+Enter value for customer_id: 30
+Enter value for customer_name: shubh
+Enter value for email: shubhasd@gmail.com
+Enter value for phone: 6376356377
+Enter value for address: pune
+old   1: insert into customers values(&customer_id,'&customer_name','&email',&phone,'&address')
+new   1: insert into customers values(30,'shubh','shubhasd@gmail.com',6376356377,'pune')
+
+1 row created.
+
+SQL> /
+Enter value for customer_id: 40
+Enter value for customer_name: mahi
+Enter value for email: mahi@gmail.com
+Enter value for phone: 7667898909
+Enter value for address: pashan
+old   1: insert into customers values(&customer_id,'&customer_name','&email',&phone,'&address')
+new   1: insert into customers values(40,'mahi','mahi@gmail.com',7667898909,'pashan')
+
+1 row created.
+
+SQL> select * from customers;
+
+CUSTOMER_ID CUSTOMER_NAME                                      EMAIL                                                   PHONE                                                                            
+----------- -------------------------------------------------- -------------------------------------------------- ----------                                                                            
+ADDRESS                                                                                                                                                                                                 
+----------------------------------------------------------------------------------------------------                                                                                                    
+         20 super                                              super234@gmail.com                                 1232457887                                                                            
+baner                                                                                                                                                                                                   
+                                                                                                                                                                                                        
+         30 shubh                                              shubhasd@gmail.com                                 6376356377                                                                            
+pune                                                                                                                                                                                                    
+                                                                                                                                                                                                        
+         40 mahi                                               mahi@gmail.com                                     7667898909                                                                            
+pashan                                                                                                                                                                                                  
+                                                                                                                                                                                                        
+
+SQL> set linesize 500
+SQL> set pagesize 500
+SQL> select * from customers;
+
+CUSTOMER_ID CUSTOMER_NAME                                      EMAIL                                                   PHONE ADDRESS                                                                                                                                                                                                                                                                                                                                                                                
+----------- -------------------------------------------------- -------------------------------------------------- ---------- ----------------------------------------------------------------------------------------------------                                                                                                                                                                                                                                                                                   
+         20 super                                              super234@gmail.com                                 1232457887 baner                                                                                                                                                                                                                                                                                                                                                                                  
+         30 shubh                                              shubhasd@gmail.com                                 6376356377 pune                                                                                                                                                                                                                                                                                                                                                                                   
+         40 mahi                                               mahi@gmail.com                                     7667898909 pashan                                                                                                                                                                                                                                                                                                                                                                                 
+
+SQL> drop table account;
+drop table account
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> create table account(accountid number primary key,
+  2  customer_id number,
+  3  account_type varchar(20),
+  4  balance number,
+  5  check (balance>=0),
+  6  foreign key (customer_id)references customer(customer_id));
+foreign key (customer_id)references customer(customer_id))
+                                             *
+ERROR at line 6:
+ORA-00904: "CUSTOMER_ID": invalid identifier 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  create table account(accountid number primary key,
+  2  customer_id number,
+  3  account_type varchar(20) not null,
+  4  balance number check (balance>=0),
+  5* foreign key (customer_id)references customers(customer_id))
+SQL> /
+
+Table created.
+
+SQL> desc account;
+ Name                                                                                                                                                                                                                                                                                                  Null?    Type
+ ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ ACCOUNTID                                                                                                                                                                                                                                                                                             NOT NULL NUMBER
+ CUSTOMER_ID                                                                                                                                                                                                                                                                                                    NUMBER
+ ACCOUNT_TYPE                                                                                                                                                                                                                                                                                          NOT NULL VARCHAR2(20)
+ BALANCE                                                                                                                                                                                                                                                                                                        NUMBER
+
+SQL> insert into account values(&accountid,&customer_id,'&account_type',&balance);
+Enter value for accountid: 101
+Enter value for customer_id: 60
+Enter value for account_type: saving
+Enter value for balance: 20000
+old   1: insert into account values(&accountid,&customer_id,'&account_type',&balance)
+new   1: insert into account values(101,60,'saving',20000)
+insert into account values(101,60,'saving',20000)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (HR.SYS_C007300) violated - parent key not found 
+
+
+SQL> /
+Enter value for accountid: 101
+Enter value for customer_id: 1
+Enter value for account_type: saving
+Enter value for balance: 5000
+old   1: insert into account values(&accountid,&customer_id,'&account_type',&balance)
+new   1: insert into account values(101,1,'saving',5000)
+insert into account values(101,1,'saving',5000)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (HR.SYS_C007300) violated - parent key not found 
+
+
+SQL> /
+Enter value for accountid: 101
+Enter value for customer_id: 20
+Enter value for account_type: saving
+Enter value for balance: 20000
+old   1: insert into account values(&accountid,&customer_id,'&account_type',&balance)
+new   1: insert into account values(101,20,'saving',20000)
+
+1 row created.
+
+SQL> /
+Enter value for accountid: 102
+Enter value for customer_id: 30
+Enter value for account_type: current
+Enter value for balance: 50000
+old   1: insert into account values(&accountid,&customer_id,'&account_type',&balance)
+new   1: insert into account values(102,30,'current',50000)
+
+1 row created.
+
+SQL> /
+Enter value for accountid: 103
+Enter value for customer_id: 40
+Enter value for account_type: saving
+Enter value for balance: 20000
+old   1: insert into account values(&accountid,&customer_id,'&account_type',&balance)
+new   1: insert into account values(103,40,'saving',20000)
+
+1 row created.
+
+SQL> select * from account;
+
+ ACCOUNTID CUSTOMER_ID ACCOUNT_TYPE            BALANCE                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+---------- ----------- -------------------- ----------                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+       101          20 saving                    20000                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+       102          30 current                   50000                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+       103          40 saving                    20000                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+
+SQL> create table transactions (accountid int primary key,
+  2  transactionid number,
+  3  tdate not null,
+  4  
+SQL> ed
+Wrote file afiedt.buf
+
+  1  create table transactions (transactionid int primary key,
+  2  accountid int
+  3  tdate date not null,
+  4  amount decimal(10,2) not null check(amount>=0),
+  5  transactiontype varchar(20) not null,
+  6  foreign key(accountid) references
+  7* accounts(accountid))
+SQL> /
+tdate date not null,
+*
+ERROR at line 3:
+ORA-00907: missing right parenthesis 
+
+
+SQL> ed
+Wrote file afiedt.buf
+
+  1  create table transactions (transactionid int primary key,
+  2  accountid int,
+  3  tdate date not null,
+  4  amount decimal(10,2) not null check(amount>=0),
+  5  transactiontype varchar(20) not null,
+  6  foreign key(accountid) references
+  7* account(accountid))
+SQL> /
+
+Table created.
+
+SQL> desc transactions;
+ Name                                                                                                                                                                                                                                                                                                  Null?    Type
+ ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -------- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ TRANSACTIONID                                                                                                                                                                                                                                                                                         NOT NULL NUMBER(38)
+ ACCOUNTID                                                                                                                                                                                                                                                                                                      NUMBER(38)
+ TDATE                                                                                                                                                                                                                                                                                                 NOT NULL DATE
+ AMOUNT                                                                                                                                                                                                                                                                                                NOT NULL NUMBER(10,2)
+ TRANSACTIONTYPE                                                                                                                                                                                                                                                                                       NOT NULL VARCHAR2(20)
+
+SQL> insert into transactions values(&transactionid,&accountid,'&tdate',&amount,'&transactiontype');
+Enter value for transactionid: 1
+Enter value for accountid: 1
+Enter value for tdate: 02-jan-2022
+Enter value for amount: 20000
+Enter value for transactiontype: deposit
+old   1: insert into transactions values(&transactionid,&accountid,'&tdate',&amount,'&transactiontype')
+new   1: insert into transactions values(1,1,'02-jan-2022',20000,'deposit')
+insert into transactions values(1,1,'02-jan-2022',20000,'deposit')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (HR.SYS_C007306) violated - parent key not found 
+
+
+SQL> /
+Enter value for transactionid: 1
+Enter value for accountid: 101
+Enter value for tdate: 02-jan-2022
+Enter value for amount: 20000
+Enter value for transactiontype: deposit
+old   1: insert into transactions values(&transactionid,&accountid,'&tdate',&amount,'&transactiontype')
+new   1: insert into transactions values(1,101,'02-jan-2022',20000,'deposit')
+
+1 row created.
+
+SQL> /
+Enter value for transactionid: 2
+Enter value for accountid: 102
+Enter value for tdate: 10-feb-2002
+Enter value for amount: 50000
+Enter value for transactiontype: cheque
+old   1: insert into transactions values(&transactionid,&accountid,'&tdate',&amount,'&transactiontype')
+new   1: insert into transactions values(2,102,'10-feb-2002',50000,'cheque')
+
+1 row created.
+
+SQL> /
+Enter value for transactionid: 3
+Enter value for accountid: 103
+Enter value for tdate: 10-jan-2005
+Enter value for amount: 30000
+Enter value for transactiontype: online
+old   1: insert into transactions values(&transactionid,&accountid,'&tdate',&amount,'&transactiontype')
+new   1: insert into transactions values(3,103,'10-jan-2005',30000,'online')
+
+1 row created.
+
+SQL> select * from transactions;
+
+TRANSACTIONID  ACCOUNTID TDATE         AMOUNT TRANSACTIONTYPE                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+------------- ---------- --------- ---------- --------------------                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+            1        101 02-JAN-22      20000 deposit                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+            2        102 10-FEB-02      50000 cheque                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+            3        103 10-JAN-05      30000 online                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+
+SQL> spool off
