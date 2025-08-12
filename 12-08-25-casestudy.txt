@@ -7,17 +7,6 @@ SQL> desc customers;
  PHONE                                                                                                             NOT NULL VARCHAR2(15)
  ADDRESS                                                                                                                    VARCHAR2(255)
 
-SQL> create table accounts(
-  2  accountid primary key,
-  3  costomer_id number,
-  4  account_type varchar(20) not null,
-  5  balance number check (balance>=0),
-  6  foreign key costomer_id references customer(customr_id));
-foreign key costomer_id references customer(customr_id))
-            *
-ERROR at line 6:
-ORA-00906: missing left parenthesis 
-
 
 SQL> ed
 Wrote file afiedt.buf
@@ -104,35 +93,8 @@ SQL> desc accounts;
  ACCOUNT_TYPE                                                                                                      NOT NULL VARCHAR2(20)
  BALANCE                                                                                                                    NUMBER
 
-SQL> insert into accounts values(&accountid,&customer_id,'&account_type',&balance);
-Enter value for accountid: 101
-Enter value for customer_id: 20
-Enter value for account_type: saving 
-Enter value for balance: 20000
-old   1: insert into accounts values(&accountid,&customer_id,'&account_type',&balance)
-new   1: insert into accounts values(101,20,'saving ',20000)
-insert into accounts values(101,20,'saving ',20000)
+
 *
-ERROR at line 1:
-ORA-02291: integrity constraint (HR.SYS_C007295) violated - parent key not found 
-
-
-SQL> insert into accounts values(101,10,'saving'20000);
-insert into accounts values(101,10,'saving'20000)
-                                           *
-ERROR at line 1:
-ORA-00917: missing comma 
-
-
-SQL> insert into accounts values(101,10,'saving',20000);
-insert into accounts values(101,10,'saving',20000)
-*
-ERROR at line 1:
-ORA-02291: integrity constraint (HR.SYS_C007295) violated - parent key not found 
-
-
-SQL> ed
-Wrote file afiedt.buf
 
   1  insert into accounts values(&accountid,&customer_id,'&account_type',&balance)
   2* insert into accounts values(101,60,'saving',20000)
@@ -699,3 +661,4 @@ TRANSACTIONID  ACCOUNTID TDATE         AMOUNT TRANSACTIONTYPE
             3        103 10-JAN-05      30000 online                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 
 SQL> spool off
+
